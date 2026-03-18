@@ -10,6 +10,10 @@ A lightweight eCommerce web application built with Node.js, Express, and EJS.
 - Basic search
 - Mock user login
 
+## CI Status
+
+[![CI](https://github.com/BRakshitha2003/smartshop-lite/actions/workflows/ci.yml/badge.svg)](https://github.com/BRakshitha2003/smartshop-lite/actions/workflows/ci.yml)
+
 ## Getting Started
 
 1. Install dependencies: `npm install`
