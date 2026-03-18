@@ -1,4 +1,5 @@
 const express = require('express');
+const { products } = require('./data');
 const app = express();
 const port = 3000;
 
@@ -10,21 +11,41 @@ app.set('views', __dirname + '/views');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
-// Sample products data
-const products = [
-  { id: 1, name: 'Laptop', price: 999, description: 'A powerful laptop for work and play.' },
-  { id: 2, name: 'Phone', price: 699, description: 'Latest smartphone with advanced features.' },
-  { id: 3, name: 'Headphones', price: 199, description: 'High-quality wireless headphones.' }
-];
-
 // In-memory cart (for simplicity, in production use sessions or database)
 let cart = [];
 
+// Mock login state
+let isLoggedIn = false;
+
 // Routes
+// Home page: displays product listing
 app.get('/', (req, res) => {
-  res.render('index', { products });
+  res.render('index', { products, isLoggedIn });
 });
 
+// Login page
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+// Handle login POST request
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  if (password === 'password') {
+    isLoggedIn = true;
+    res.redirect('/');
+  } else {
+    res.send('Invalid credentials');
+  }
+});
+
+// Logout
+app.get('/logout', (req, res) => {
+  isLoggedIn = false;
+  res.redirect('/');
+});
+
+// Product details page
 app.get('/product/:id', (req, res) => {
   const product = products.find(p => p.id == req.params.id);
   if (product) {
@@ -34,7 +55,7 @@ app.get('/product/:id', (req, res) => {
   }
 });
 
-// Add to cart
+// Add product to cart
 app.post('/add-to-cart/:id', (req, res) => {
   const product = products.find(p => p.id == req.params.id);
   if (product) {
@@ -45,13 +66,13 @@ app.post('/add-to-cart/:id', (req, res) => {
   }
 });
 
-// View cart
+// View shopping cart
 app.get('/cart', (req, res) => {
   const total = cart.reduce((sum, item) => sum + item.price, 0);
   res.render('cart', { cart, total });
 });
 
-// Remove from cart
+// Remove item from cart
 app.post('/remove-from-cart/:index', (req, res) => {
   const index = parseInt(req.params.index);
   if (index >= 0 && index < cart.length) {
