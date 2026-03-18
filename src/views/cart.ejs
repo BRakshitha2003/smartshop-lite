@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartShop Lite - Shopping Cart</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .cart-item { border: 1px solid #ddd; padding: 10px; margin: 10px 0; display: flex; justify-content: space-between; }
+    .total { font-weight: bold; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Shopping Cart</h1>
+  <% if (cart.length === 0) { %>
+    <p>Your cart is empty.</p>
+  <% } else { %>
+    <% cart.forEach((item, index) => { %>
+      <div class="cart-item">
+        <div>
+          <h3><%= item.name %></h3>
+          <p>$<%= item.price %></p>
+        </div>
+        <form action="/remove-from-cart/<%= index %>" method="POST" style="margin: 0;">
+          <button type="submit">Remove</button>
+        </form>
+      </div>
+    <% }); %>
+    <div class="total">Total: $<%= total %></div>
+  <% } %>
+  <a href="/">Continue Shopping</a>
+</body>
+</html>
