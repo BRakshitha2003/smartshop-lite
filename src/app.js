@@ -30,7 +30,7 @@ app.get('/login', (req, res) => {
 
 // Handle login POST request
 app.post('/login', (req, res) => {
-  const { username, password } = req.body;
+  const { password } = req.body;
   if (password === 'password') {
     isLoggedIn = true;
     res.redirect('/');
